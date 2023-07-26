@@ -12,7 +12,6 @@ export const BooksReducer = (state = initState, action) => {
     if (actions[action.type]) {
         let newState = {...state}
         actions[action.type](newState, action)
-        console.log(newState)
         return newState
     }
 

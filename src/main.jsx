@@ -9,14 +9,17 @@ import store from "./store/index.jsx";
 // import ReducerContext from "./components/reducer_context/index.jsx";
 
 import ReducerApp from "./components/reducer/index.jsx";
+import Immer from "./components/immer/index.jsx";
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
         {/*<App />*/}
         {/*<ReducerContext />*/}
 
-        <Provider store={store}>
-            <ReducerApp/>
-        </Provider>
+        {/*<Provider store={store}>*/}
+        {/*    <ReducerApp/>*/}
+        {/*</Provider>*/}
+
+        <Immer></Immer>
     </React.StrictMode>,
 )
