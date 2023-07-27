@@ -1,38 +1,48 @@
-import {useDispatch, useSelector} from "react-redux";
-import {useState} from "react";
+import {useReducer, useState} from 'react'
 
-function ReducerApp() {
-    const dispatch = useDispatch()
-    const count = useSelector((state) => state.CountReducer.count)
-    const books = useSelector((state) => state.BooksReducer.books)
+function ReducerCom() {
 
-    const [book, setBook] = useState('')
-    const addBook = () => {
-        dispatch({type: 'addBook', value: {id: Date.now().toString(36), title: book}})
-        setBook('')
+    function listReducer(state, action) {
+        switch (action.type) {
+            case 'add':
+                return [...state, {id: Date.now().toString(36), text: action.msg}]
+            case 'edit':
+                return state.map(item => {
+                    if (item.id === action.id) {
+                        return {...item, text: 'new ' + item.text}
+                    }
+                    return item
+                })
+            case 'remove':
+                return state.filter(item => {
+                    return item.id !== action.id;
+                })
+        }
     }
+
+    const [list, setListDispatch] = useReducer(listReducer, [
+        {id: Date.now().toString(36), text: 'aaa'},
+    ]);
+
+    const [msg, setMsg] = useState('')
 
     return (
         <div>
-            reducer: {count} <br/>
-            <button onClick={() => dispatch({type: 'add'})}>+1</button>
-            <br/>
-            <button onClick={() => dispatch({type: 'setCount', value: 5})}>set =5</button>
-            <br/>
-
-            <hr/>
-            reducer: {book}<br/>
-            增加书本：<input type="text"
-                   value={book}
-                   onChange={(e) => setBook(e.target.value)}
-                   onKeyUp={(e) => e.key === 'Enter' && addBook()}/>
+            <input value={msg} onChange={(e) => setMsg(e.target.value)} />
+            <button onClick={() => setListDispatch({type: 'add', msg: msg})}>添加</button>
             <ul>
-                {books && books.map((item, index) => <li key={index}>{item.title}</li>)}
+                {list && list.map(item => {
+                    return (
+                        <li key={item.id}>
+                            {item.text}
+                            <button onClick={() => setListDispatch({type: 'edit', id: item.id})}>编辑</button>
+                            <button onClick={() => setListDispatch({type: 'remove', id: item.id})}>删除</button>
+                        </li>
+                    )
+                })}
             </ul>
-
-
         </div>
     )
 }
 
-export default ReducerApp
+export default ReducerCom
