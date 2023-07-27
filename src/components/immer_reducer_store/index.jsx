@@ -16,6 +16,17 @@ function ImmerReducerStore() {
         dispatch({type: 'editList', item: {id, state: e.target.checked}})
     }
 
+    function fetchSecretSauce() {
+        return fetch('https://jsonplaceholder.typicode.com/users')
+    }
+
+    const handleGetData = () => {
+        dispatch(async function (dispatch) {
+            const res = await fetchSecretSauce().then(response => response.json())
+            dispatch({type: 'saveList', res})
+        })
+    }
+
     return (
         <div>
 
@@ -31,6 +42,10 @@ function ImmerReducerStore() {
                         </div>
                     )
                 })}
+            </div>
+            <hr/>
+            <div>
+                <button onClick={() => handleGetData()}>get data</button>
             </div>
         </div>
     )
